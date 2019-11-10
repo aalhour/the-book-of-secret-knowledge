@@ -1,6 +1,8 @@
 # Contributing
 
-If you would like to support this project, you have an interesting idea how to improve the operation of this tool or if you found some errors - do fork this add your fixes and add pull-request of your branch to the **master branch**.
+  > _A real community, however, exists only when its members interact in a meaningful way that deepens their understanding of each other and leads to learning._
+
+If you would like to support this project, have an interesting idea how to improve the operation of this tool, or if you found some errors - fork this, add your fixes, and add a pull request of your branch to the **master branch**.
 
 ## Signature of commit
 
@@ -13,9 +15,32 @@ grep -qs "^$SOB" "$1" || echo "$SOB" >> "$1"
 
 ## Pull requests
 
-When creating pull request, please heed the following:
+When creating a pull request, please heed the following:
 
 - Base your code on the latest master branch to avoid manual merges
 - Code review may ensue in order to help shape your proposal
 - Explain the problem and your proposed solution
 - One-line description - please don't continue the description on new lines
+
+## How to find broken links?
+
+```bash
+git clone https://github.com/trimstray/the-book-of-secret-knowledge && cd the-book-of-secret-knowledge
+
+for i in $(sed -n 's/.*href="\([^"]*\).*/\1/p' README.md | grep -v "^#") ; do
+
+  _rcode=$(curl -s -o /dev/null -w "%{http_code}" "$i")
+
+  if [[ "$_rcode" != "2"* ]] ; then echo " -> $i - $_rcode" ; fi
+
+done
+```
+
+Result:
+
+```bash
+ -> https://ghostproject.fr/ - 503
+ -> http://www.mmnt.net/ - 302
+ -> https://search.weleakinfo.com/ - 503
+ [...]
+```
